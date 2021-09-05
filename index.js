@@ -23,13 +23,12 @@ weight = applesTotal(arrayOfGoods);
 console.log(`Apples - ${weight}`);
 
 function alphabet(goods) {
-    let someGoods = arrayOfGoods.sort((a, b) => a.item.localeCompare(b.item));
+    let someGoods = goods.sort((a, b) => a.item.localeCompare(b.item));
     return someGoods;
 }
 
-sort = alphabet(arrayOfGoods);
-console.log(`The sorted array in alphabetical order - ${sort}`);
-//does not show field 'item' //Output: [Obj obj]
+const sort = alphabet(arrayOfGoods);
+console.log(`The sorted array in alphabetical order -`, sort);
 
 function sortByPrice(a, b) {
     let sortedGoods = arrayOfGoods
