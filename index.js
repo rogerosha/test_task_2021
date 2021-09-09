@@ -1,25 +1,46 @@
+// @ts-check
 const arrayOfGoods = require('./arrayOfGoods.json');
 
+function parse(goods) {
+    return (+(goods.pricePerItem || goods.pricePerKilo).slice(1).replace(',', '.'));
+}
+
+function validatePrice(goods) {
+    return !Number.isNaN(parse(goods));
+}
+
+function validation(goods) {
+    return goods.filter((good) => 
+        typeof good.item === 'string'
+        && typeof good.type === 'string'
+        && (typeof good.weight === 'number'
+        || typeof good.quantity === 'number')
+        && validatePrice(good));
+}
+
+const check = validation(arrayOfGoods);
+console.log(check);
+
 function watermelonsTotal(goods) {
-    let someMelons = arrayOfGoods
+    let someMelons = goods
         .filter((good) => good.item === 'watermelon')
         .map((good) => good.quantity);
     let quantityOfMelons = someMelons.reduce((accumulator, current) => accumulator + current);
     return quantityOfMelons;
 }
 
-quantity = watermelonsTotal(arrayOfGoods);
+const quantity = watermelonsTotal(arrayOfGoods);
 console.log(`Watermelons - ${quantity}`);
 
 function applesTotal(goods) {
-    let someApples = arrayOfGoods
+    let someApples = goods
         .filter((good) => good.item === 'apple')
         .map((good) => good.weight);
     let weightOfApples = someApples.reduce((accumulator, current) => accumulator + current);
     return weightOfApples;
 }
 
-weight = applesTotal(arrayOfGoods);
+const weight = applesTotal(arrayOfGoods);
 console.log(`Apples - ${weight}`);
 
 function alphabet(goods) {
@@ -37,12 +58,12 @@ function sortByPrice(a, b) {
     return a - b;
 }
 
-price = sortByPrice(arrayOfGoods);
+const price = sortByPrice(arrayOfGoods);
 console.log(`The sorted array by cost of the record - ${price}`);
 //does not see numbers //Output: NaN
 
 function cheaperOranges(goods) {
-    let someOranges = arrayOfGoods
+    let someOranges = goods
         .filter((good) => good.item === 'orange')
         .map((good) => good.type);
     let value = someOranges.reduce((accumulator, currentValue) => {
@@ -52,36 +73,36 @@ function cheaperOranges(goods) {
     return value;
 }
 
-type = cheaperOranges(arrayOfGoods);
+const type = cheaperOranges(arrayOfGoods);
 console.log(`The cheapest orange type is: ${type}`);
 //wrong type of oranges //Output: Clementine
 
-function fruitsPrice(goods) {
-    let costOranges = 0;
-    let costApples = 0;
-    let costWatermelons = 0;
-    let costPineapples = 0;
-    let costFruits = 0;
-    switch (good.item) {
-        case 'orange':
-            costOranges += good.quantity * good.pricePerKilo.slice(1);
-            break;
-        case 'apple':
-            costApples += good.quantity * good.pricePerKilo.slice(1);
-            break;
-        case 'watermelon':
-            costWatermelons += good.quantity * good.pricePerItem.slice(1);
-            break;
-        case 'pineapple':
-            costPineapples += good.quantity * good.pricePerItem.slice(1);
-    }
-    costFruits += good.quantity * good.pricePerItem.slice(1) || good.quantity * good.pricePerKilo.slice(1);
+// function fruitsPrice(goods) {
+//     let costOranges = 0;
+//     let costApples = 0;
+//     let costWatermelons = 0;
+//     let costPineapples = 0;
+//     let costFruits = 0;
+//     switch (goods.item) {
+//         case 'orange':
+//             costOranges += goods.quantity * goods.pricePerKilo.slice(1);
+//             break;
+//         case 'apple':
+//             costApples += goods.quantity * goods.pricePerKilo.slice(1);
+//             break;
+//         case 'watermelon':
+//             costWatermelons += goods.quantity * goods.pricePerItem.slice(1);
+//             break;
+//         case 'pineapple':
+//             costPineapples += goods.quantity * goods.pricePerItem.slice(1);
+//     }
+//     costFruits += goods.quantity * goods.pricePerItem.slice(1) || goods.quantity * goods.pricePerKilo.slice(1);
     
-    console.log(`Apples - ${costApples}`);
-    console.log(`Pineapples - ${costPineapples}`);
-    console.log(`Watermelons - ${costWatermelons}`);
-    console.log(`Oranges - ${costOranges}`);
-    console.log(`Cost of all fruits - ${costFruits}`);
-    return costFruits;
-}
+//     console.log(`Apples - ${costApples}`);
+//     console.log(`Pineapples - ${costPineapples}`);
+//     console.log(`Watermelons - ${costWatermelons}`);
+//     console.log(`Oranges - ${costOranges}`);
+//     console.log(`Cost of all fruits - ${costFruits}`);
+//     return costFruits;
+// }
 
