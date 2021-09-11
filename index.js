@@ -1,4 +1,3 @@
-// @ts-check
 const arrayOfGoods = require('./arrayOfGoods.json');
 
 function parse(goods) {
@@ -78,3 +77,42 @@ function cheaperOranges(goods) {
 
 const type = cheaperOranges(arrayOfGoods);
 console.log(`The cheapest orange type is: ${type}`);
+
+function fruitsPrice(goods) {
+  let costOranges = 0;
+  let costApples = 0;
+  let costWatermelons = 0;
+  let costPineapples = 0;
+  let costFruits = 0;
+
+  goods
+    .filter((good) => good.item === 'orange')
+    .forEach((good) => {
+      costOranges += parse(good) * good.weight;
+    });
+  goods
+    .filter((good) => good.item === 'apple')
+    .forEach((good) => {
+      costApples += parse(good) * good.weight;
+    });
+  goods
+    .filter((good) => good.item === 'watermelon')
+    .forEach((good) => {
+      costWatermelons += parse(good) * good.quantity;
+    });
+  goods
+    .filter((good) => good.item === 'pineapple')
+    .forEach((good) => {
+      costPineapples += parse(good) * good.quantity;
+    });
+  costFruits = costOranges + costApples + costWatermelons + costPineapples;
+  console.log(`Apples - ${costApples}`);
+  console.log(`Pineapples - ${costPineapples}`);
+  console.log(`Watermelons - ${costWatermelons}`);
+  console.log(`Oranges - ${costOranges}`);
+  console.log(`Cost that should be paid for all these goods - ${costFruits}`);
+  return costFruits;
+}
+
+const result = fruitsPrice(arrayOfGoods);
+console.log(result);
