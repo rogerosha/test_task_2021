@@ -95,12 +95,7 @@ function getFruitsPrice(goods) {
     });
 
   costFruits = costOranges + costApples + costWatermelons + costPineapples;
-  console.log(`Apples - ${costApples}`);
-  console.log(`Pineapples - ${costPineapples}`);
-  console.log(`Watermelons - ${costWatermelons}`);
-  console.log(`Oranges - ${costOranges}`);
-  console.log(`Cost that should be paid for all these goods - ${costFruits}`);
-  return costFruits;
+  return { costApples, costPineapples, costWatermelons, costOranges, costFruits };
 }
 
 const validatedArray = validateGoods(arrayOfGoods);
@@ -109,7 +104,7 @@ const weightOfApples = countApples(validatedArray);
 const sort = sortByAlphabet(validatedArray);
 const price = sortByPrice(validatedArray);
 const cheapestOrangeType = getCheapestOrangeType(validatedArray);
-const fruitsPrice = getFruitsPrice(validatedArray);
+const { costApples, costPineapples, costWatermelons, costOranges, costFruits } = getFruitsPrice(validatedArray);
 
 console.log('Validated array is - ', validatedArray);
 console.log(`Watermelons - ${quantityOfMelons}`);
@@ -117,4 +112,8 @@ console.log(`Apples - ${weightOfApples}`);
 console.log('The sorted array in alphabetical order -', sort);
 console.log('The sorted array by cost of the record - ', price);
 console.log(`The cheapest orange type is: ${cheapestOrangeType}`);
-console.log(fruitsPrice);
+console.log(`Apples - ${costApples}`);
+console.log(`Pineapples - ${costPineapples}`);
+console.log(`Watermelons - ${costWatermelons}`);
+console.log(`Oranges - ${costOranges}`);
+console.log(`Cost that should be paid for all these goods - ${costFruits}`);
