@@ -60,50 +60,21 @@ function sortByPrice(goods) {
 const price = sortByPrice(arrayOfGoods);
 console.log('The sorted array by cost of the record - ', price);
 
-// function cheaperOranges(goods) {
-//   let leastCost = null;
-//   let leastCostOfItem = null;
+function cheaperOranges(goods) {
+  let leastCost = null;
+  let leastCostOfItem = null;
 
-//   goods
-//     .filter((good) => good.item === 'orange')
-//     .forEach((good) => {
-//       const value = validatePrice(good) * (good.quantity || good.weight);
-//       if (leastCost === null || value < leastCost) {
-//         leastCost = value;
-//         leastCostOfItem = good;
-//       }
-//     });
-// }
+  goods
+    .filter((good) => good.item === 'orange')
+    .forEach((good) => {
+      const value = parse(good);
+      if (leastCost === null || value < leastCost) {
+        leastCost = value;
+        leastCostOfItem = good.type;
+      }
+    });
+  return leastCostOfItem;
+}
 
-// const type = cheaperOranges(arrayOfGoods);
-// console.log(`The cheapest orange type is: ${type}`);
-// // wrong type of oranges //Output: Clementine
-
-// function fruitsPrice(goods) {
-//     let costOranges = 0;
-//     let costApples = 0;
-//     let costWatermelons = 0;
-//     let costPineapples = 0;
-//     let costFruits = 0;
-//     switch (goods.item) {
-//         case 'orange':
-//             costOranges += goods.quantity * goods.pricePerKilo.slice(1);
-//             break;
-//         case 'apple':
-//             costApples += goods.quantity * goods.pricePerKilo.slice(1);
-//             break;
-//         case 'watermelon':
-//             costWatermelons += goods.quantity * goods.pricePerItem.slice(1);
-//             break;
-//         case 'pineapple':
-//             costPineapples += goods.quantity * goods.pricePerItem.slice(1);
-//     }
-//     costFruits += goods.quantity * goods.pricePerItem.slice(1) || goods.quantity * goods.pricePerKilo.slice(1);
-
-//     console.log(`Apples - ${costApples}`);
-//     console.log(`Pineapples - ${costPineapples}`);
-//     console.log(`Watermelons - ${costWatermelons}`);
-//     console.log(`Oranges - ${costOranges}`);
-//     console.log(`Cost of all fruits - ${costFruits}`);
-//     return costFruits;
-// }
+const type = cheaperOranges(arrayOfGoods);
+console.log(`The cheapest orange type is: ${type}`);
