@@ -20,7 +20,7 @@ function validation(goods) {
 }
 
 const check = validation(arrayOfGoods);
-console.log(check);
+console.log('Validated array is - ', check);
 
 function watermelonsTotal(goods) {
   const someMelons = goods.filter((good) => good.item === 'watermelon').map((good) => good.quantity);
@@ -48,19 +48,31 @@ function alphabet(goods) {
 const sort = alphabet(arrayOfGoods);
 console.log('The sorted array in alphabetical order -', sort);
 
-// function sortByPrice(a, b) {
-//   const sortedGoods = arrayOfGoods.map((good) => good.pricePerKilo || good.pricePerItem).forEach((price) => +price.split('$')[1]);
-//   return a - b;
-// }
+function sortByPrice(goods) {
+  const sorted = goods.sort((a, b) => {
+    const item = parse(a) * (a.quantity || a.weight);
+    const kilo = parse(b) * (b.quantity || b.weight);
+    return kilo - item;
+  });
+  return sorted;
+}
 
-// const price = sortByPrice(arrayOfGoods);
-// console.log(`The sorted array by cost of the record - ${price}`);
-// does not see numbers //Output: NaN
+const price = sortByPrice(arrayOfGoods);
+console.log('The sorted array by cost of the record - ', price);
 
 // function cheaperOranges(goods) {
-//   const someOranges = goods.filter((good) => good.item === 'orange').map((good) => good.type);
-//   const value = someOranges.reduce((accumulator, currentValue) => (accumulator < currentValue ? accumulator : currentValue));
-//   return value;
+//   let leastCost = null;
+//   let leastCostOfItem = null;
+
+//   goods
+//     .filter((good) => good.item === 'orange')
+//     .forEach((good) => {
+//       const value = validatePrice(good) * (good.quantity || good.weight);
+//       if (leastCost === null || value < leastCost) {
+//         leastCost = value;
+//         leastCostOfItem = good;
+//       }
+//     });
 // }
 
 // const type = cheaperOranges(arrayOfGoods);
