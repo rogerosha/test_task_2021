@@ -1,84 +1,69 @@
 const arrayOfGoods = require('./arrayOfGoods.json');
 
-function parse(goods) {
-  return +(goods.pricePerItem || goods.pricePerKilo).slice(1).replace(',', '.');
+function parsePrice(good) {
+  return +(good.pricePerItem || good.pricePerKilo).slice(1).replace(',', '.');
 }
 
-function validatePrice(goods) {
-  return !Number.isNaN(parse(goods));
+function validatePrice(good) {
+  return !Number.isNaN(parsePrice(good));
 }
 
-function validation(goods) {
+function validateGoods(goods) {
   return goods.filter(
     (good) =>
       typeof good.item === 'string' &&
       typeof good.type === 'string' &&
-      (typeof good.weight === 'number' || typeof good.quantity === 'number') &&
+      ((typeof good.weight === 'number' && good.pricePerKilo) || (typeof good.quantity === 'number' && good.pricePerItem)) &&
       validatePrice(good),
   );
 }
 
-const check = validation(arrayOfGoods);
-console.log('Validated array is - ', check);
-
-function watermelonsTotal(goods) {
-  const someMelons = goods.filter((good) => good.item === 'watermelon').map((good) => good.quantity);
-  const quantityOfMelons = someMelons.reduce((accumulator, current) => accumulator + current);
-  return quantityOfMelons;
+function countWatermelons(goods) {
+  return goods
+    .filter((good) => good.item === 'watermelon')
+    .map((good) => good.quantity)
+    .reduce((accumulator, current) => accumulator + current);
 }
 
-const quantity = watermelonsTotal(arrayOfGoods);
-console.log(`Watermelons - ${quantity}`);
-
-function applesTotal(goods) {
-  const someApples = goods.filter((good) => good.item === 'apple').map((good) => good.weight);
-  const weightOfApples = someApples.reduce((accumulator, current) => accumulator + current);
-  return weightOfApples;
+function countApples(goods) {
+  return goods
+    .filter((good) => good.item === 'apple')
+    .map((good) => good.weight)
+    .reduce((accumulator, current) => accumulator + current);
 }
 
-const weight = applesTotal(arrayOfGoods);
-console.log(`Apples - ${weight}`);
-
-function alphabet(goods) {
-  const someGoods = goods.sort((a, b) => a.item.localeCompare(b.item));
-  return someGoods;
+function sortByAlphabet(goods) {
+  return [...goods].sort((a, b) => a.item.localeCompare(b.item));
 }
-
-const sort = alphabet(arrayOfGoods);
-console.log('The sorted array in alphabetical order -', sort);
 
 function sortByPrice(goods) {
-  const sorted = goods.sort((a, b) => {
-    const item = parse(a) * (a.quantity || a.weight);
-    const kilo = parse(b) * (b.quantity || b.weight);
-    return kilo - item;
+  return [...goods].sort((a, b) => {
+    const firstCount = parsePrice(a) * (a.quantity || a.weight);
+    const secondCount = parsePrice(b) * (b.quantity || b.weight);
+
+    return secondCount - firstCount;
   });
-  return sorted;
 }
 
-const price = sortByPrice(arrayOfGoods);
-console.log('The sorted array by cost of the record - ', price);
-
-function cheaperOranges(goods) {
+function getCheapestOrangeType(goods) {
   let leastCost = null;
   let leastCostOfItem = null;
 
   goods
     .filter((good) => good.item === 'orange')
     .forEach((good) => {
-      const value = parse(good);
+      const value = parsePrice(good);
+
       if (leastCost === null || value < leastCost) {
         leastCost = value;
         leastCostOfItem = good.type;
       }
     });
+
   return leastCostOfItem;
 }
 
-const type = cheaperOranges(arrayOfGoods);
-console.log(`The cheapest orange type is: ${type}`);
-
-function fruitsPrice(goods) {
+function getFruitsPrice(goods) {
   let costOranges = 0;
   let costApples = 0;
   let costWatermelons = 0;
@@ -88,23 +73,27 @@ function fruitsPrice(goods) {
   goods
     .filter((good) => good.item === 'orange')
     .forEach((good) => {
-      costOranges += parse(good) * good.weight;
+      costOranges += parsePrice(good) * good.weight;
     });
+
   goods
     .filter((good) => good.item === 'apple')
     .forEach((good) => {
-      costApples += parse(good) * good.weight;
+      costApples += parsePrice(good) * good.weight;
     });
+
   goods
     .filter((good) => good.item === 'watermelon')
     .forEach((good) => {
-      costWatermelons += parse(good) * good.quantity;
+      costWatermelons += parsePrice(good) * good.quantity;
     });
+
   goods
     .filter((good) => good.item === 'pineapple')
     .forEach((good) => {
-      costPineapples += parse(good) * good.quantity;
+      costPineapples += parsePrice(good) * good.quantity;
     });
+
   costFruits = costOranges + costApples + costWatermelons + costPineapples;
   console.log(`Apples - ${costApples}`);
   console.log(`Pineapples - ${costPineapples}`);
@@ -114,5 +103,18 @@ function fruitsPrice(goods) {
   return costFruits;
 }
 
-const result = fruitsPrice(arrayOfGoods);
-console.log(result);
+const validatedArray = validateGoods(arrayOfGoods);
+const quantityOfMelons = countWatermelons(validatedArray);
+const weightOfApples = countApples(validatedArray);
+const sort = sortByAlphabet(validatedArray);
+const price = sortByPrice(validatedArray);
+const cheapestOrangeType = getCheapestOrangeType(validatedArray);
+const fruitsPrice = getFruitsPrice(validatedArray);
+
+console.log('Validated array is - ', validatedArray);
+console.log(`Watermelons - ${quantityOfMelons}`);
+console.log(`Apples - ${weightOfApples}`);
+console.log('The sorted array in alphabetical order -', sort);
+console.log('The sorted array by cost of the record - ', price);
+console.log(`The cheapest orange type is: ${cheapestOrangeType}`);
+console.log(fruitsPrice);
